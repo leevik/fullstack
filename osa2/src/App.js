@@ -1,69 +1,149 @@
-import React from 'react'
-import ReactDOM from "react-dom"
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-const Total = (props) => {
-  console.log("total",props);
-   return ( 
-      <div>
-          <p>Number of exercises {props.course.parts[0].exercises+props.course.parts[1].exercises+props.course.parts[2].exercises} </p>
-      </div>
+const Header = ({ course }) => {
+  return (
+    <div>
+    <h1>{course.name}</h1>
+    </div>
   )
 }
+
+const Total = ({ course }) => {
+console.log(course)
+  const result = course.parts.map(part => part.exercises);
+  const sum = result.reduce((accumulator, currentValue) => accumulator + currentValue);
+  return(
+    <p>Total of exercises {sum}</p>
+  ) 
+}
+
 const Part = (props) => {
-console.log("part",props);
-return (
-  <div>
-    <p>{props.text}, {props.text2} </p>
-  </div>
-)
+   console.log(props, "props"); 
+  return (
+   props.part.parts.map(part => 
+    <ul key={part.id}>
+    {part.name} {part.exercises}
+    </ul>
+   ))
 }
 
-const Header = (props) => {
-console.log("header", props);
-return <h1>{props.course}</h1>
-}
-
-const Content = (props) => {
-console.log("content",props);
-return (
+const Content = ({ course }) => {
+  return (
     <div>
-      <Part text={props.course.parts[0].name} text2={props.course.parts[0].exercises} />
-      <Part text={props.course.parts[1].name} text2={props.course.parts[1].exercises}/>
-      <Part text={props.course.parts[2].name} text2={props.course.parts[2].exercises}/>
+    <Part part={course}/>
     </div>
- )
+  )
+}
+const Course = ({course}) => {
+  return (
+    <div>
+      <Header course={course[0]} />
+      <Content course={course[0]} />
+      <Total course={course[0]} />
+      <Header course={course[1]} />
+      <Content course={course[1]} />
+      <Total course={course[1]} />
+    </div> 
+  )
 }
 
 const App = () => {
-  const course = {
-    name: "Half Stack application development",
+  const course = [
+  {
+    name: 'Half Stack application development',
+    id: 1,
     parts: [
-  {
-   name: "Fundamentals of React",
-   exercises: 10,
-   id: 1
+      {
+        name: 'Fundamentals of React',
+        exercises: 10,
+        id: 1
+      },
+      {
+        name: 'Using props to pass data',
+        exercises: 7,
+        id: 2
+      },
+      {
+        name: 'State of a component',
+        exercises: 14,
+        id: 3
+      },
+      {
+        name: 'Redux',
+        exercises: 11,
+        id: 4
+      }
+    ]
   },
-   {
-    name: "Using props to pass data",
-    exercises: 7,
-    id: 2
-  },
   {
-      name: "State of component",
-      exercises: 14,
-      id: 3
+    name: "Node.js",
+    id:2,
+    parts: [
+      {
+        name: "Routing",
+        exercises: 3,
+        id: 1
+      },
+      {
+        name: "Middlewares",
+        exercises: 7,
+        id: 2
+      }
+    ]
   }
-]
+  ]
+    return (
+      <div>
+        <Course course={course}/>
+      </div>
+    )
 }
-  return ( 
+
+ReactDOM.render(<App />, document.getElementById('root'))
+export default App;
+
+/* const Header = ({ course }) => {
+  return (
+    <h1>{course.name}</h1>
+  )
+}
+
+const Total = ({ course }) => {
+
+  const result = course.parts.map(part => part.exercises);
+  const sum = result.reduce((accumulator, currentValue) => accumulator + currentValue);
+  return(
+    <p>Total of exercises {sum}</p>
+  ) 
+}
+
+const Part = ({course}) => {
+  return (
+    <p>{course}</p>
+     <p>
+      {props.part.name} {props.part.exercises}
+    </p>     
+  )
+}
+
+const Content = ({ course }) => {
+  console.log(course, "content")
+  return (
     <div>
-    <Header courseName={course.name}/>
-    <Content course={course}/>
-     <Total course={course}/>
+      <Part part={course.parts[0]} />
+      <Part part={course.parts[1]} />
+      <Part part={course.parts[2]} />
+      <Part part={course.parts[3]} />
     </div>
   )
 }
-ReactDOM.render( <App />, document.getElementById('root')
-);
-
-
+const Course = ({course}) => {
+  return (
+    <div>
+      <Header course={course[0]} />
+      <Content course={course[0]} />
+      <Total course={course[0]} />
+    </div> 
+  )
+} */
